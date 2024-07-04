@@ -6,9 +6,11 @@
     "graphql": "^16.9.0",
     "graphql-helix": "^1.13.0",
     "koa": "^2.15.3",
-    "koa-bodyparser": "^4.4.1"
+    "koa-bodyparser": "^4.4.1",
+    "mongoose": "^8.4.4",
+    "tsx": "^4.16.2"
   },
   "scripts": {
-    "dev": "tsx --watch ./src/server.ts"
+    "dev": "tsx --watch ./src/start.ts"
   }
 }
