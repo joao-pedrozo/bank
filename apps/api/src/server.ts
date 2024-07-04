@@ -7,7 +7,7 @@ import {
   sendResult,
   shouldRenderGraphiQL,
 } from "graphql-helix";
-// import { schema } from "./schema";
+import { schema } from "./schema";
 
 // declare module "koa" {
 //   interface Request {
@@ -38,7 +38,7 @@ app.use(async (ctx) => {
       query,
       variables,
       request,
-      // schema,
+      schema,
     });
 
     ctx.respond = false;
