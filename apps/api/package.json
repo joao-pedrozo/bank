@@ -1,0 +1,13 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "graphql-helix": "^1.13.0",
+    "koa": "^2.15.3",
+    "koa-bodyparser": "^4.4.1"
+  },
+  "scripts": {
+    "dev": "tsx --watch ./server.ts"
+  }
+}
