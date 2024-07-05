@@ -1,6 +1,5 @@
 import {
   GraphQLFloat,
-  GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLSchema,
@@ -43,9 +42,11 @@ export const schema = new GraphQLSchema({
         resolve: async (_, args, context) => {
           const account = mongoose.model("Account");
 
+          const DEFAULT_BALANCE = 0;
+
           const newAccount = new account({
             name: args.name,
-            balance: args.balance,
+            balance: args.balance || DEFAULT_BALANCE,
           });
 
           await newAccount.save();
