@@ -20,13 +20,8 @@ export const schema = new GraphQLSchema({
         type: new GraphQLNonNull(AccountConnection.connectionType),
         args: connectionArgs,
         description: "List of accounts",
-        resolve: async (_, args, context) => {
-          const result = await AccountLoader.loadAll(context, args);
-
-          console.log(result);
-
-          return result;
-        },
+        resolve: async (_, args, context) =>
+          await AccountLoader.loadAll(context, args),
       },
     }),
   }),
@@ -39,21 +34,18 @@ export const schema = new GraphQLSchema({
           fields: {
             name: { type: GraphQLString },
             balance: { type: GraphQLFloat },
-            currency: { type: GraphQLString },
           },
         }),
         args: {
-          // name: { type: GraphQLString },
-          // balance: { type: GraphQLFloat },
-          // currency: { type: GraphQLString },
+          name: { type: GraphQLString },
+          balance: { type: GraphQLFloat },
         },
         resolve: async (_, args, context) => {
           const account = mongoose.model("Account");
 
           const newAccount = new account({
-            name: "test",
-            balance: 20,
-            currency: "test",
+            name: args.name,
+            balance: args.balance,
           });
 
           await newAccount.save();
