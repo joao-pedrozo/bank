@@ -20,12 +20,18 @@ importers:
 
   apps/api:
     dependencies:
+      '@entria/graphql-mongo-helpers':
+        specifier: ^1.1.2
+        version: 1.1.2(dataloader@2.2.2)(graphql-relay@0.10.1(graphql@16.9.0))(graphql@16.9.0)(mongoose@8.4.4(socks@2.7.1))
       graphql:
         specifier: ^16.9.0
         version: 16.9.0
       graphql-helix:
         specifier: ^1.13.0
         version: 1.13.0(graphql@16.9.0)
+      graphql-relay:
+        specifier: ^0.10.1
+        version: 0.10.1(graphql@16.9.0)
       koa:
         specifier: ^2.15.3
         version: 2.15.3
@@ -444,6 +450,21 @@ packages:
 
   '@emnapi/runtime@1.2.0':
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
+
+  '@entria/graphql-mongo-helpers@1.1.2':
+    resolution: {integrity: sha512-MkQJdl4/FCAfRx0a5SmDuv+yT+ers9ZleIBYHswwVaCeTXbQQRJxLRQd13yawFfGS1XOZCEzvCsbjQididn/Gg==}
+    peerDependencies:
+      dataloader: '*'
+      graphql: '>=16.0.0'
+      graphql-relay: '*'
+      mongoose: '*'
+
+  '@entria/graphql-mongoose-loader@4.4.0':
+    resolution: {integrity: sha512-RcNdqPQf/GlnQch1IyUOTMTw13k+zE7zK9JeMd5cUGnShI/ih4k1JZEEtJDwyRwW1bOqAhlmP8dyY1CY8iPX8Q==}
+    peerDependencies:
+      graphql: '*'
+      graphql-relay: '*'
+      mongoose: '*'
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -1690,6 +1711,9 @@ packages:
     resolution: {integrity: sha512-a9l6T1qqDogvvnw0nKlfZzqsyikEBZBClF39V3TFoKhDtGBqHu2HkuomJc02j5zft8zrUaXEuoicLeW54RkzPg==}
     engines: {node: '>= 14'}
 
+  dataloader@2.2.2:
+    resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
+
   debug@3.2.7:
     resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
     peerDependencies:
@@ -2282,6 +2306,12 @@ packages:
     resolution: {integrity: sha512-cqDKMoRywKjnL0ZWCTB0GOiBgsH6d3nU4JGDF6RuzAyd35tmalzKpSxkx3NNp4H5RvnKWnrukWzR51wUq277ng==}
     peerDependencies:
       graphql: ^15.3.0 || ^16.0.0
+
+  graphql-relay@0.10.1:
+    resolution: {integrity: sha512-8AtwSe6B0/b4+YzynHr38PP7S+zX5Vs5LEo0BEzGCPq/THAiHa5H5ZLf3bRbKbok15ADxDQSsGJmlqXeJDDPIw==}
+    engines: {node: ^12.20.0 || ^14.15.0 || >= 15.9.0}
+    peerDependencies:
+      graphql: ^16.2.0
 
   graphql@16.9.0:
     resolution: {integrity: sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==}
@@ -4266,6 +4296,20 @@ snapshots:
       tslib: 2.6.2
     optional: true
 
+  '@entria/graphql-mongo-helpers@1.1.2(dataloader@2.2.2)(graphql-relay@0.10.1(graphql@16.9.0))(graphql@16.9.0)(mongoose@8.4.4(socks@2.7.1))':
+    dependencies:
+      '@entria/graphql-mongoose-loader': 4.4.0(graphql-relay@0.10.1(graphql@16.9.0))(graphql@16.9.0)(mongoose@8.4.4(socks@2.7.1))
+      dataloader: 2.2.2
+      graphql: 16.9.0
+      graphql-relay: 0.10.1(graphql@16.9.0)
+      mongoose: 8.4.4(socks@2.7.1)
+
+  '@entria/graphql-mongoose-loader@4.4.0(graphql-relay@0.10.1(graphql@16.9.0))(graphql@16.9.0)(mongoose@8.4.4(socks@2.7.1))':
+    dependencies:
+      graphql: 16.9.0
+      graphql-relay: 0.10.1(graphql@16.9.0)
+      mongoose: 8.4.4(socks@2.7.1)
+
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
 
@@ -5532,6 +5576,8 @@ snapshots:
 
   data-uri-to-buffer@5.0.1: {}
 
+  dataloader@2.2.2: {}
+
   debug@3.2.7:
     dependencies:
       ms: 2.1.2
@@ -6369,6 +6415,10 @@ snapshots:
   graphemer@1.4.0: {}
 
   graphql-helix@1.13.0(graphql@16.9.0):
+    dependencies:
+      graphql: 16.9.0
+
+  graphql-relay@0.10.1(graphql@16.9.0):
     dependencies:
       graphql: 16.9.0
 
