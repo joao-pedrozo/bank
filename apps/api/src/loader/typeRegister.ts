@@ -1,4 +1,4 @@
-import { GraphQLObjectType } from "graphql";
+import { GraphQLObjectType, GraphQLTypeResolver } from "graphql";
 
 import { fromGlobalId, nodeDefinitions } from "graphql-relay";
 
@@ -22,8 +22,10 @@ export const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
 
     return (load && load(context, id)) || null;
   },
-  (obj) => {
-    return obj && obj.constructor ? obj.constructor.name : null;
+  (obj: GraphQLTypeResolver<unknown, GraphQLContext>) => {
+    const { type } = typesLoaders[obj.constructor.name] || { type: null };
+
+    return type?.name;
   }
 );
 

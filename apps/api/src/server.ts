@@ -8,6 +8,7 @@ import {
   shouldRenderGraphiQL,
 } from "graphql-helix";
 import { schema } from "./schema";
+import { getContext } from "./getContext";
 
 // declare module "koa" {
 //   interface Request {
@@ -39,6 +40,7 @@ app.use(async (ctx) => {
       variables,
       request,
       schema,
+      contextFactory: () => getContext({ req: ctx.req }),
     });
 
     ctx.respond = false;
