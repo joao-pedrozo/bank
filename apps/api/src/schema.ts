@@ -10,6 +10,7 @@ import { connectionArgs } from "graphql-relay";
 
 import AccountLoader from "./account/AccountLoader";
 import { AccountConnection } from "./account/AccountType";
+import mongoose from "mongoose";
 
 export const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -42,12 +43,22 @@ export const schema = new GraphQLSchema({
           },
         }),
         args: {
-          name: { type: GraphQLString },
-          balance: { type: GraphQLFloat },
-          currency: { type: GraphQLString },
+          // name: { type: GraphQLString },
+          // balance: { type: GraphQLFloat },
+          // currency: { type: GraphQLString },
         },
         resolve: async (_, args, context) => {
-          // TODO
+          const account = mongoose.model("Account");
+
+          const newAccount = new account({
+            name: "test",
+            balance: 20,
+            currency: "test",
+          });
+
+          await newAccount.save();
+
+          return newAccount;
         },
       },
     }),
