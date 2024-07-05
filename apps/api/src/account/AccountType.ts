@@ -1,4 +1,5 @@
 import {
+  GraphQLFloat,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -20,7 +21,7 @@ const AccountType = new GraphQLObjectType<AccountDocument>({
       description: "Account's name",
     },
     balance: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: new GraphQLNonNull(GraphQLFloat),
       description: "Account's balance",
     },
     transactions: {
@@ -32,6 +33,10 @@ const AccountType = new GraphQLObjectType<AccountDocument>({
           },
         })
       ),
+    },
+    cpf: {
+      type: new GraphQLNonNull(GraphQLString),
+      description: "Account's CPF",
     },
   }),
   interfaces: () => [nodeInterface],
