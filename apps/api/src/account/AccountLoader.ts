@@ -9,8 +9,6 @@ const Loader = createLoader({
   loaderName: "AccountLoader",
 });
 
-console.log(88, Loader.load);
-
 export default Loader;
 export const { getLoader, clearCache, load, loadAll } = Loader;
 
