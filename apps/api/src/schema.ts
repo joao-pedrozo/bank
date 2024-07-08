@@ -25,6 +25,13 @@ export const schema = new GraphQLSchema({
         resolve: async (_, args, context) =>
           await AccountLoader.loadAll(context, args),
       },
+      transactions: {
+        type: new GraphQLNonNull(TransactionConnection.connectionType),
+        args: connectionArgs,
+        description: "List of transactions",
+        resolve: async (_, args, context) =>
+          await TransactionLoader.loadAll(context, args),
+      },
     }),
   }),
   mutation: new GraphQLObjectType({
