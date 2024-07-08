@@ -42,12 +42,10 @@ export const schema = new GraphQLSchema({
           name: "AccountMutation",
           fields: {
             name: { type: GraphQLString },
-            balance: { type: GraphQLFloat },
           },
         }),
         args: {
           name: { type: GraphQLString },
-          balance: { type: GraphQLFloat },
         },
         resolve: async (_, args, context) => {
           const account = mongoose.model("Account");
@@ -56,7 +54,6 @@ export const schema = new GraphQLSchema({
 
           const newAccount = new account({
             name: args.name,
-            balance: args.balance || 0,
           });
 
           await newAccount.save();
