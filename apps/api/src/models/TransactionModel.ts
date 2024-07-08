@@ -1,26 +1,24 @@
 import { Document, Schema, Types, model } from "mongoose";
 
 export interface TransactionDocument extends Document {
-  accountId: Types.ObjectId;
-  type: "credit" | "debit";
   amount: number;
+  from: Types.ObjectId;
+  to: Types.ObjectId;
   description?: string;
   date: Date;
-  balance: number;
 }
 
 const transactionSchema = new Schema<TransactionDocument>(
   {
-    accountId: { type: Schema.Types.ObjectId, ref: "Account", required: true },
-    type: { type: String, enum: ["credit", "debit"], required: true },
-    amount: { type: Number, required: true, min: 0 },
+    amount: { type: Number, required: true },
+    from: { type: Schema.Types.ObjectId, ref: "Account", required: true },
+    to: { type: Schema.Types.ObjectId, ref: "Account", required: true },
     description: { type: String, trim: true },
-    balance: { type: Number, required: true },
-    date: { type: Date, required: true, default: Date.now },
+    date: { type: Date, default: Date.now, required: true },
   },
   {
     collection: "Transaction",
-    timestamps: { createdAt: "date", updatedAt: false },
+    timestamps: true,
   }
 );
 
