@@ -19,10 +19,6 @@ const AccountType = new GraphQLObjectType<AccountDocument>({
       type: new GraphQLNonNull(GraphQLString),
       description: "Account's name",
     },
-    balance: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: "Account's balance",
-    },
     transactions: {
       type: new GraphQLList(
         new GraphQLObjectType({
