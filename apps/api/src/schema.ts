@@ -104,39 +104,24 @@ export const schema = new GraphQLSchema({
             throw new Error("To account not found");
           }
 
-          const fromAccountCredit = await Transaction.aggregate([
-            {
-              $match: {
-                to: fromAccount._id,
-              },
-            },
-            {
-              $group: {
-                _id: null,
-                total: { $sum: "$amount" },
-              },
-            },
+          const [fromAccountCredit, fromAccountDebit] = await Promise.all([
+            Transaction.aggregate([
+              { $match: { to: fromAccount._id } },
+              { $group: { _id: null, total: { $sum: "$amount" } } },
+            ]),
+            Transaction.aggregate([
+              { $match: { from: fromAccount._id } },
+              { $group: { _id: null, total: { $sum: "$amount" } } },
+            ]),
           ]);
 
-          const fromAccountDebit = await Transaction.aggregate([
-            {
-              $match: {
-                from: fromAccount._id,
-              },
-            },
-            {
-              $group: {
-                _id: null,
-                total: { $sum: "$amount" },
-              },
-            },
-          ]);
+          const fromAccountCreditTotal =
+            (fromAccountCredit[0] && fromAccountCredit[0].total) || 0;
+          const fromAccountDebitTotal =
+            (fromAccountDebit[0] && fromAccountDebit[0].total) || 0;
 
-          const fromAccountBalance = fromAccountCredit.length
-            ? fromAccountCredit[0].total
-            : 0 - fromAccountDebit[0]?.total;
-
-          console.log(fromAccountBalance);
+          const fromAccountBalance =
+            fromAccountCreditTotal - fromAccountDebitTotal;
 
           if (fromAccountBalance < amount) {
             throw new Error("Insufficient funds");
