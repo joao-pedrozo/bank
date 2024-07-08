@@ -23,7 +23,7 @@ const AccountType = new GraphQLObjectType<AccountDocument>({
     transactions: {
       type: new GraphQLList(
         new GraphQLObjectType({
-          name: "Transaction",
+          name: "AccountTransactions",
           fields: {
             id: globalIdField("Transaction"),
           },

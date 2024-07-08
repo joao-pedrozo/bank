@@ -10,7 +10,7 @@ export interface TransactionDocument extends Document {
 
 const transactionSchema = new Schema<TransactionDocument>(
   {
-    amount: { type: Number, required: true, min: 0 },
+    amount: { type: Number, required: true },
     from: { type: Schema.Types.ObjectId, ref: "Account", required: true },
     to: { type: Schema.Types.ObjectId, ref: "Account", required: true },
     description: { type: String, trim: true },

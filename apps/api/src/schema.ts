@@ -42,18 +42,19 @@ export const schema = new GraphQLSchema({
           name: "AccountMutation",
           fields: {
             name: { type: GraphQLString },
+            cpf: { type: GraphQLString },
           },
         }),
         args: {
           name: { type: GraphQLString },
+          cpf: { type: GraphQLString },
         },
         resolve: async (_, args, context) => {
           const account = mongoose.model("Account");
 
-          const DEFAULT_BALANCE = 0;
-
           const newAccount = new account({
             name: args.name,
+            cpf: args.cpf,
           });
 
           await newAccount.save();
@@ -82,18 +83,18 @@ export const schema = new GraphQLSchema({
           }
 
           if (!from) {
-            throw new Error("From account ID is required");
+            throw new Error("From account CPF is required");
           }
 
           if (!to) {
-            throw new Error("To account ID is required");
+            throw new Error("To account CPF is required");
           }
 
           const Account = mongoose.model("Account");
           const Transaction = mongoose.model("Transaction");
 
-          const fromAccount = await Account.findById(from);
-          const toAccount = await Account.findById(to);
+          const fromAccount = await Account.findOne({ cpf: from });
+          const toAccount = await Account.findOne({ cpf: to });
 
           if (!fromAccount) {
             throw new Error("From account not found");
@@ -103,7 +104,41 @@ export const schema = new GraphQLSchema({
             throw new Error("To account not found");
           }
 
-          if (fromAccount.balance < amount) {
+          const fromAccountCredit = await Transaction.aggregate([
+            {
+              $match: {
+                to: fromAccount._id,
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$amount" },
+              },
+            },
+          ]);
+
+          const fromAccountDebit = await Transaction.aggregate([
+            {
+              $match: {
+                from: fromAccount._id,
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                total: { $sum: "$amount" },
+              },
+            },
+          ]);
+
+          const fromAccountBalance = fromAccountCredit.length
+            ? fromAccountCredit[0].total
+            : 0 - fromAccountDebit[0]?.total;
+
+          console.log(fromAccountBalance);
+
+          if (fromAccountBalance < amount) {
             throw new Error("Insufficient funds");
           }
 
@@ -111,28 +146,30 @@ export const schema = new GraphQLSchema({
           session.startTransaction();
 
           try {
-            fromAccount.balance -= amount;
-            toAccount.balance += amount;
-
-            await fromAccount.save({ session });
-            await toAccount.save({ session });
-
-            const newTransaction = new Transaction({
+            const creditTransaction = new Transaction({
               amount,
-              from,
-              to,
+              from: fromAccount._id,
+              to: toAccount._id,
             });
 
-            await newTransaction.save({ session });
+            const debitTransaction = new Transaction({
+              amount: -amount,
+              from: toAccount._id,
+              to: fromAccount._id,
+            });
+
+            await creditTransaction.save({ session });
+            await debitTransaction.save({ session });
 
             await session.commitTransaction();
             session.endSession();
 
-            return newTransaction;
+            return creditTransaction;
           } catch (error) {
             await session.abortTransaction();
             session.endSession();
-            throw new Error("Transaction failed: " + error.message);
+
+            throw error;
           }
         },
       },
