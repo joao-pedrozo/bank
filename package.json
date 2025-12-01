@@ -1,0 +1,20 @@
+{
+  "name": "bank",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter ./apps/api dev",
+    "dev:web": "bun run --filter ./apps/web dev",
+    "dev:api": "bun run --filter ./apps/api dev"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
